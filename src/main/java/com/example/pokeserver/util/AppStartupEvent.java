@@ -1,4 +1,4 @@
-package com.example.pokeserver.data.util;
+package com.example.pokeserver.util;
 
 import com.example.pokeserver.data.*;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
