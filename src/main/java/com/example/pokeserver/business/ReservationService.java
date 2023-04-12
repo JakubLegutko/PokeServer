@@ -23,7 +23,11 @@ public class ReservationService {
         this.guestRepository = guestRepository;
         this.reservationRepository = reservationRepository;
     }
-
+public List<Room> getRooms() {
+        Iterable<Room> roomList;
+        roomList = this.roomRepository.findAll();
+        return (List<Room>) roomList;
+    }
     public List<RoomReservation> getRoomReservationsForDate(Date date) {
         Iterable<Room> rooms = this.roomRepository.findAll();
         Map<Long, RoomReservation> roomReservationMap = new HashMap();
@@ -58,5 +62,10 @@ public class ReservationService {
         });
         return roomReservations;
     }
+
+    public void addGuest(Guest guest) {
+        this.guestRepository.save(guest);
+    }
+
 }
 
