@@ -17,8 +17,6 @@ public class RegistrationService {
             for (User u : users) {
                 if (u.getLogin().equals(user.getLogin())) {
                     return 401;
-                } else if (u.getEmail().equals(user.getEmail())) {
-                    return 401;
                 } else {
                     userRepository.save(user);
                     return 201;
