@@ -1,5 +1,6 @@
 package com.example.pokeserver.web;
 
+import ch.qos.logback.core.model.Model;
 import com.example.pokeserver.business.UserService;
 import com.example.pokeserver.data.User;
 import org.springframework.stereotype.Controller;
@@ -17,7 +18,9 @@ public class ClassicController {
     }
 
     @RequestMapping(path = "/users", method = RequestMethod.GET)
-    public List<User> getUsers() {
-        return this.userService.getUsers();
+    public List<User> getUsers(Model model) {
+        List<User> users = this.userService.getUsers();
+        model.addAttribute("users", users);
+        return "users";
     }
 }
