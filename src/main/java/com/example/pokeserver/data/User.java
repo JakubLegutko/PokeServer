@@ -2,37 +2,26 @@ package com.example.pokeserver.data;
 
 import jakarta.persistence.*;
 
+
 @Entity
-@Table(name="USERS")
+@Table(name = "users")
 public class User {
+
     @Id
-    @Column(name="USER_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name="LOGIN")
-    private String login;
-    @Column(name="PASSWORD")
+
+    @Column(nullable = false, unique = true, length = 45)
+    private String email;
+
+    @Column(nullable = false, length = 64)
     private String password;
 
-    @Column(name="AUTHORITY")
-    private String authority;
-    public User() {
-    }
+    @Column(name = "first_name", nullable = false, length = 20)
+    private String firstName;
 
-    public User(Long id, String login, String email, String password, String authority) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
-        this.authority = authority;
-    }
-
-    public String getAuthority() {
-        return authority;
-    }
-
-    public void setAuthority(String authority) {
-        this.authority = authority;
-    }
+    @Column(name = "last_name", nullable = false, length = 20)
+    private String lastName;
 
     public Long getId() {
         return id;
@@ -42,12 +31,12 @@ public class User {
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -56,5 +45,21 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

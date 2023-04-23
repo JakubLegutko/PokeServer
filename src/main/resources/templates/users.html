@@ -12,10 +12,12 @@
     <th>Login</th>
     <th>Password</th>
   </tr>
-  <tr th:each="user : ${users}">
-    <td th:text="${user.Id}"> Id </td>
-    <td th:text="${user.login}"> Login </td>
+  <tr th:each="user : ${listUsers}">
+    <td th:text="${user.id}"> Id </td>
+    <td th:text="${user.email}"> Login </td>
     <td th:text="${user.password}"> Password </td>
+    <td th:text="${user.firstName}"> Name </td>
+    <td th:text="${user.lastName}"> Last Name </td>
   </tr>
 </table>
 </body>

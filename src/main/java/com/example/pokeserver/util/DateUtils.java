@@ -25,4 +25,8 @@ public class DateUtils {
         }
         return date;
     }
+
+    public String getLocalDateTime() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+    }
 }
