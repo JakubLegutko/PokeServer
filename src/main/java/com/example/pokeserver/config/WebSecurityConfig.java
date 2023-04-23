@@ -55,7 +55,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/users","/api/**").authenticated()
                         .anyRequest().permitAll())
                 .formLogin(form -> form
-
+                        //.loginPage("/api/login")  -- uncomment to enable API login, needs appropriate form!!
                                 .usernameParameter("login")
                         .defaultSuccessUrl("/api/users", true)
                                 .permitAll()
