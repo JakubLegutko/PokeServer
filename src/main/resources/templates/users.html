@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>PokemonApp Users</title>
+</head>
+<body>
+<h1>  Welcome to the Users Page (top secret)</h1>
+<table>
+  <tr>
+    <th>Id</th>
+    <th>Login</th>
+    <th>Password</th>
+  </tr>
+  <tr th:each="user : ${listUsers}">
+    <td th:text="${user.id}"> Id </td>
+    <td th:text="${user.email}"> Login </td>
+    <td th:text="${user.password}"> Password </td>
+    <td th:text="${user.firstName}"> Name </td>
+    <td th:text="${user.lastName}"> Last Name </td>
+  </tr>
+</table>
+</body>
+</html>
