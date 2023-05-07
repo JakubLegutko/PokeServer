@@ -52,7 +52,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/users","/api/**").authenticated()
+                        .requestMatchers("/users","/api/**").hasAnyAuthority("USER","LEAGUE_ADMIN","COURSE_ADMIN")
                         .anyRequest().permitAll())
                 .formLogin(form -> form
                         //.loginPage("/api/login")  -- uncomment to enable API login, needs appropriate form!!
