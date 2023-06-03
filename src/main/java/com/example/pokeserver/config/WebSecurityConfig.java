@@ -1,6 +1,7 @@
 package com.example.pokeserver.config;
 
 import com.example.pokeserver.business.CustomUserDetailsService;
+import com.example.pokeserver.data.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,32 +22,25 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-
-    @Autowired
-    private DataSource dataSource;
     @Bean
     AuthenticationManager authenticationManager(
             AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new CustomUserDetailsService();
-    }
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
+    @Autowired
+    public DaoAuthenticationProvider authenticationProvider(UserRepository userRepository) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setUserDetailsService(new CustomUserDetailsService(userRepository));
         authProvider.setPasswordEncoder(passwordEncoder());
 
         return authProvider;
     }
-
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

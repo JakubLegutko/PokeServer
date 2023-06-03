@@ -5,15 +5,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import lombok.experimental.UtilityClass;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-@Component
+@UtilityClass
 public class DateUtils {
 
     public Date createDateFromDateString(String dateString){
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = null;
+        Date date;
         if(StringUtils.hasText(dateString)){
            try{
                date = format.parse(dateString);

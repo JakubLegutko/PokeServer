@@ -4,6 +4,7 @@ package com.example.pokeserver.web;
 import com.example.pokeserver.data.Role;
 import com.example.pokeserver.data.User;
 import com.example.pokeserver.data.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -17,14 +18,10 @@ import java.util.List;
 import java.util.Set;
 
 @Controller
+@RequiredArgsConstructor
 public class ClassicController {
 
-    @Autowired
     private final UserRepository userRepository;
-
-    public ClassicController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @GetMapping("/users")
     public String listUsers(Model model) {
