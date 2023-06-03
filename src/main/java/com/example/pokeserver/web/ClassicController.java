@@ -1,6 +1,7 @@
 package com.example.pokeserver.web;
 
 
+import com.example.pokeserver.data.Role;
 import com.example.pokeserver.data.User;
 import com.example.pokeserver.data.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class ClassicController {
@@ -42,7 +44,9 @@ public class ClassicController {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-
+        Role role = new Role();
+        role.setName("USER");
+        user.setRoles(Set.of(role)); // Modify to add correct role to user, need logic
         userRepository.save(user);
 
         return "register_success";

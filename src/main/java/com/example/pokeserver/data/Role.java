@@ -9,8 +9,8 @@ import jakarta.persistence.*;
         @Column(name = "role_id")
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Integer id;
-
-        private String name;
+        @Column(name = "role")
+        private String name = "USER";
 
         public Integer getId() {
             return id;
