@@ -2,6 +2,9 @@ package com.example.pokeserver.data;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 @Entity
 @Table(name = "users")
@@ -22,6 +25,13 @@ public class User {
 
     @Column(name = "last_name", nullable = false, length = 20)
     private String lastName;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -61,5 +71,18 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+
+            this.roles.add(role);
     }
 }
