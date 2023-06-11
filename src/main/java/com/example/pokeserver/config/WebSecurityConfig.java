@@ -14,6 +14,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,8 +32,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(
-        prePostEnabled = false, jsr250Enabled = true
+@EnableGlobalMethodSecurity(
+        prePostEnabled = false, securedEnabled = false, jsr250Enabled = true
 )
 public class WebSecurityConfig  {
     private final UserRepository userRepository;
@@ -74,6 +75,7 @@ public class WebSecurityConfig  {
             .csrf(AbstractHttpConfigurer::disable) // (1)
             .authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/authentication/**").permitAll()
+                    .requestMatchers("/api/users/test").hasAnyAuthority("ADMIN", "LEAGUE_ADMIN")
                 .anyRequest().authenticated())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // (3)
             .httpBasic(Customizer.withDefaults()); // (4)

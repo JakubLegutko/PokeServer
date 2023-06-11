@@ -1,12 +1,15 @@
 package com.example.pokeserver.config;
 
 import com.example.pokeserver.business.TokenService;
+import com.example.pokeserver.data.Role;
 import com.example.pokeserver.data.User;
 import com.example.pokeserver.util.CustomUserDetails;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.el.parser.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,10 +23,10 @@ import java.io.IOException;
 
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
-        private final TokenService tokenService;
+        private final TokenService jwtUtil;
 
-        public JwtTokenFilter(TokenService tokenService) {
-                this.tokenService = tokenService;
+        public JwtTokenFilter(TokenService jwtUtil) {
+                this.jwtUtil = jwtUtil;
         }
 
         @Override
@@ -38,7 +41,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
                 String token = getAccessToken(request);
 
-                if (!tokenService.validateAccessToken(token)) {
+                if (!jwtUtil.validateAccessToken(token)) {
                         filterChain.doFilter(request, response);
                         return;
                 }
@@ -66,24 +69,18 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 UserDetails userDetails = getUserDetails(token);
 
                 UsernamePasswordAuthenticationToken
-                        authentication = new UsernamePasswordAuthenticationToken(userDetails, null, null);
-                var claims = tokenService.parseClaims(token);
+                        authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
                 authentication.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
-//        private UserDetails getUserDetails(String token) {
-//                var user = new User();
-//                String jwtSubject = tokenService.getSubject(token);
-//                user.setEmail(jwtSubject);
-//                CustomUserDetails userDetails = new CustomUserDetails(user);
-//                return userDetails;
-//        }
         private UserDetails getUserDetails(String token) {
-                User userDetails = new User();
-                var claims = tokenService.parseClaims(token);
+                User user = new User();
+
+                Claims claims = jwtUtil.parseClaims(token);
                 String subject = (String) claims.get(Claims.SUBJECT);
                 String roles = (String) claims.get("roles");
 
@@ -91,14 +88,14 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 String[] roleNames = roles.split(",");
 
                 for (String aRoleName : roleNames) {
-                        userDetails.addRole(new Role(aRoleName));
+                        user.addRole(new Role(aRoleName));
                 }
 
                 String[] jwtSubject = subject.split(",");
 
-                userDetails.setId(Integer.parseInt(jwtSubject[0]));
-                userDetails.setEmail(jwtSubject[1]);
-
+                user.setId((long) Integer.parseInt(jwtSubject[0]));
+                user.setEmail(jwtSubject[1]);
+                UserDetails userDetails = new CustomUserDetails(user);
                 return userDetails;
         }
 }

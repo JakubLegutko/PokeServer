@@ -38,7 +38,6 @@ public class UsersController {
         return "register_success";
     }
 
-    //@RolesAllowed("ADMIN")
     @RequestMapping(path = "/test", method = RequestMethod.GET)
     public List<User> getUsers() {
         return this.userRepository.findAll();
