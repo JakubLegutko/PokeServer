@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Set;
 
+import static com.example.pokeserver.controllers.Routes.UsersRoute;
+
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping(UsersRoute)
 public class UsersController {
     private final UserRepository userRepository;
 
@@ -38,7 +40,7 @@ public class UsersController {
         return "register_success";
     }
 
-    @RequestMapping(path = "/test", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public List<User> getUsers() {
         return this.userRepository.findAll();
     }

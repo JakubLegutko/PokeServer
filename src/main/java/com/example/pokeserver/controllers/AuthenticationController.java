@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/authentication")
+@RequestMapping("/auth")
 public class AuthenticationController {
     private final UserRepository userRepository;
     private final TokenService tokenService;
@@ -91,7 +91,7 @@ public class AuthenticationController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(path="/login", method = RequestMethod.GET)
+    @RequestMapping(path="/login", method = RequestMethod.POST)
     public ResponseEntity<String> login(Authentication authentication) {
         var user = userRepository.findByEmail(authentication.getName());
         String token = tokenService.generateToken(user);
