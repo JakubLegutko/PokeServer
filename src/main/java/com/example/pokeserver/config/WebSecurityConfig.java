@@ -29,6 +29,9 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.example.pokeserver.controllers.Routes.LeaguesRoute;
+import static com.example.pokeserver.controllers.Routes.UsersRoute;
+
 
 @Configuration
 @EnableWebSecurity
@@ -74,8 +77,9 @@ public class WebSecurityConfig  {
         http
             .csrf(AbstractHttpConfigurer::disable) // (1)
             .authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/authentication/**").permitAll()
-                    .requestMatchers("/api/users/test").hasAnyAuthority("ADMIN", "LEAGUE_ADMIN")
+                .requestMatchers("/auth/**").permitAll()
+                    .requestMatchers(UsersRoute+"/**").hasAnyAuthority("ADMIN", "LEAGUE_ADMIN")
+                    .requestMatchers(LeaguesRoute+"/**").hasAnyAuthority("ADMIN", "LEAGUE_ADMIN")
                 .anyRequest().authenticated())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // (3)
             .httpBasic(Customizer.withDefaults()); // (4)
