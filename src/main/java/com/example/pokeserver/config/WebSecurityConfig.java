@@ -76,7 +76,7 @@ public class WebSecurityConfig  {
  @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("*"); // Allow requests from any source
+        configuration.addAllowedOriginPattern("*"); // Allow requests from any source
         configuration.addAllowedMethod("*"); // Allow all HTTP methods
         configuration.addAllowedHeader("*"); // Allow all headers
         configuration.setAllowCredentials(true); // Allow credentials (cookies, authorization headers, etc.)

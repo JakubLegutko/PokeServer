@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.Set;
 
 @RestController
@@ -90,11 +91,35 @@ public class AuthenticationController {
         userRepository.save(newUser);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    public static class TokenRequestResponse {
+        private String token;
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+
+        private String userId;
+
+        public String getUserId() {
+            return userId;
+        }
+
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
+    }
 
     @RequestMapping(path="/login", method = RequestMethod.POST)
-    public ResponseEntity<String> login(Authentication authentication) {
+    public ResponseEntity<TokenRequestResponse> login(Authentication authentication) {
         var user = userRepository.findByEmail(authentication.getName());
         String token = tokenService.generateToken(user);
-        return new ResponseEntity<>(token, HttpStatus.OK);
+        var response = new TokenRequestResponse();
+        response.setToken(token);
+        response.setUserId(user.getId().toString());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
