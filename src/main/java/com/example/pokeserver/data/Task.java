@@ -7,7 +7,6 @@ import java.util.List;
 @Data
 public class Task {
     String id;
-    String title;
-    List<String> taskIds;
-    String imgSrc;
+    String question;
+    List<Answer> answers;
 }
