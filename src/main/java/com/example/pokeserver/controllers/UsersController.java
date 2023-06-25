@@ -1,27 +1,24 @@
 package com.example.pokeserver.controllers;
 
-import com.example.pokeserver.data.Role;
-import com.example.pokeserver.data.User;
-import com.example.pokeserver.data.UserRepository;
+import com.example.pokeserver.data.*;
 import com.example.pokeserver.util.DateUtils;
 import jakarta.annotation.security.RolesAllowed;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 @RestController
 @RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UsersController {
     private final UserRepository userRepository;
-
-    public UsersController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @RequestMapping(path="/process_register_admin", method = RequestMethod.POST)
     public String processRegisterAdmin(User user) {
@@ -41,6 +38,12 @@ public class UsersController {
     @RequestMapping(path = "/test", method = RequestMethod.GET)
     public List<User> getUsers() {
         return this.userRepository.findAll();
+    }
+
+    @GetMapping(path = "/{id}")
+    public User getUserById(@PathVariable Long id) {
+        var userFound = userRepository.findById(id);
+        return userFound.orElseGet(User::new);
     }
 }
 
