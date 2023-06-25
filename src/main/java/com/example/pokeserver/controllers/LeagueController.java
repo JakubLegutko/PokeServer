@@ -30,6 +30,6 @@ public class LeagueController {
     public League getLeagueById(@PathVariable Long id) {
         var leagueFound = leagueRepository.findById(id);
 
-        return leagueFound.orElseGet(() -> new League("", LeagueType.BUG, "", "", Collections.emptyList()));
+        return leagueFound.orElseGet(League::new);
     }
 }
